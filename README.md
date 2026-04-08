@@ -186,7 +186,6 @@ ExecutionAgent BUY MSFT ×2      → ❌ BLOCKED  (ticker_out_of_scope)
 ExecutionAgent BUY AAPL ×50     → ❌ BLOCKED  (qty_exceeded)
 ```
 
-**The winning sentence for judges:**
 > "The Execution Agent's JWT token literally cannot authorize a SELL — even if the agent code tried to call sell(), ArmorClaw's OPA policy rejects it before the request reaches Alpaca. The security is architectural, not bolted on."
 
 ---
@@ -246,4 +245,4 @@ intentional/
 
 ---
 
-*Built for the ArmorIQ Hackathon 2026 &mdash; Intentional.ai*
+*Built for the APOGEE, BITS PILANI, ArmorIQ Hackathon 2026 &mdash; Intentional.ai*
