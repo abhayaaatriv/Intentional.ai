@@ -1,0 +1,44 @@
+services:
+  opa:
+    image: openpolicyagent/opa:latest
+    command: run --server --addr 0.0.0.0:8181 /policies
+    volumes:
+      - ./backend/policies:/policies
+    ports:
+      - "8181:8181"
+
+  gateway:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: uvicorn gateway.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      - opa
+    volumes:
+      - ./backend:/app
+
+  orchestrator:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: uvicorn orchestrator.main:app --host 0.0.0.0 --port 8001 --reload
+    ports:
+      - "8001:8001"
+    env_file: .env
+    depends_on:
+      - gateway
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - gateway
+      - orchestrator

@@ -1,0 +1,2073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CapabilityGuard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Editorial+New:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════
+   CAPABILITYGUARD — EDITORIAL BRUTALIST DARK
+   Inspired by: Flow (clean editorial) × Prolific (bold craft)
+   Aesthetic: Brutalist newspaper × trading terminal × art direction
+   ════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0a0a08;
+  --bg2:      #111110;
+  --bg3:      #1a1a17;
+  --paper:    #f0ebe0;
+  --ink:      #e8e4d9;
+  --ink2:     #7a7870;
+  --ink3:     #3d3c38;
+  --lime:     #c8f135;
+  --lime-dim: #c8f13515;
+  --red:      #ff4040;
+  --red-dim:  #ff404015;
+  --amber:    #f5a623;
+  --blue:     #4a9eff;
+  --border:   rgba(232,228,217,0.08);
+  --border2:  rgba(232,228,217,0.15);
+  --mono:     'Space Mono', monospace;
+  --display:  'Bebas Neue', sans-serif;
+  --serif:    'Georgia', serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* ── CUSTOM CURSOR ── */
+* { cursor: crosshair; }
+button, a, [onclick] { cursor: pointer; }
+
+/* ── SCAN LINES ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ══════════════════════════════════════════
+   TICKER TAPE
+══════════════════════════════════════════ */
+.ticker-tape {
+  background: var(--lime);
+  color: var(--bg);
+  padding: 6px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 200;
+}
+
+.ticker-track {
+  display: inline-flex;
+  gap: 48px;
+  animation: ticker-scroll 30s linear infinite;
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.tick-item { display: inline-flex; gap: 8px; align-items: center; }
+.tick-sep { opacity: 0.4; }
+.tick-up { color: #006600; }
+.tick-dn { color: #990000; }
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.nav-logo-text {
+  font-family: var(--display);
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.nav-logo-sub {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--ink2);
+  text-transform: uppercase;
+}
+
+.nav-center {
+  display: flex;
+  gap: 32px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink2);
+  text-transform: uppercase;
+}
+
+.nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--lime-dim);
+  border: 1px solid var(--lime);
+  color: var(--lime);
+  padding: 6px 14px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+.pulse-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--lime);
+  border-radius: 50%;
+  animation: pulse-anim 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-anim {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.6); }
+}
+
+/* ══════════════════════════════════════════
+   HERO — NEWSPAPER GRID
+══════════════════════════════════════════ */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  min-height: calc(100vh - 100px);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-left {
+  padding: 64px 48px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-kicker {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--ink2);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-kicker::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--ink2);
+}
+
+.hero-headline {
+  font-family: var(--display);
+  font-size: clamp(72px, 9vw, 140px);
+  line-height: 0.92;
+  letter-spacing: 3px;
+  color: var(--paper);
+  margin-bottom: 40px;
+  text-transform: uppercase;
+}
+
+.hero-headline .accent {
+  color: var(--lime);
+  display: block;
+}
+
+.hero-headline .ghost {
+  -webkit-text-stroke: 1px rgba(240,235,224,0.2);
+  color: transparent;
+}
+
+.hero-desc {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--ink2);
+  max-width: 480px;
+  margin-bottom: 48px;
+  border-left: 2px solid var(--border2);
+  padding-left: 20px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-demo {
+  background: var(--lime);
+  color: var(--bg);
+  border: none;
+  padding: 14px 32px;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: transform 0.1s, background 0.2s;
+}
+
+.btn-demo:hover { background: #d4f540; transform: translateY(-1px); }
+.btn-demo:active { transform: scale(0.98); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink2);
+  border: 1px solid var(--border2);
+  padding: 13px 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-ghost:hover { border-color: var(--ink2); color: var(--ink); }
+
+/* ── HERO RIGHT — MANDATE TERMINAL ── */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg2);
+  position: relative;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+.term-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.term-close { background: #ff5f57; }
+.term-min { background: #febc2e; }
+.term-max { background: #28c840; }
+
+.terminal-title {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--ink3);
+  margin-left: 8px;
+  text-transform: uppercase;
+}
+
+.terminal-body {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.term-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.mandate-textarea {
+  width: 100%;
+  background: rgba(200,241,53,0.04);
+  border: 1px solid var(--border2);
+  color: var(--lime);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 14px;
+  resize: none;
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.2s;
+  caret-color: var(--lime);
+}
+
+.mandate-textarea:focus { border-color: var(--lime); }
+.mandate-textarea::placeholder { color: var(--ink3); }
+
+.presets {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.preset {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  font-size: 10px;
+  color: var(--ink3);
+  border-radius: 2px;
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+}
+
+.preset:hover {
+  background: var(--lime-dim);
+  color: var(--lime);
+}
+
+.preset-icon {
+  font-size: 8px;
+  color: var(--lime);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.parse-btn {
+  background: transparent;
+  border: 1px solid var(--lime);
+  color: var(--lime);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 2px;
+  align-self: flex-end;
+  transition: background 0.15s;
+}
+
+.parse-btn:hover { background: var(--lime-dim); }
+
+/* ══════════════════════════════════════════
+   MAIN DASHBOARD
+══════════════════════════════════════════ */
+.dashboard {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.main-content {
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── SECTION LABELS ── */
+.eyebrow {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── INTENT GRAPH BLOCK ── */
+.intent-block {}
+
+.intent-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.intent-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: var(--bg2);
+  gap: 12px;
+}
+
+.intent-key {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.intent-val {
+  font-size: 11px;
+  color: var(--ink);
+  text-align: right;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.chip-group { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+
+.chip {
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.chip-lime { background: var(--lime-dim); color: var(--lime); border: 1px solid rgba(200,241,53,0.25); }
+.chip-red  { background: var(--red-dim);  color: var(--red);  border: 1px solid rgba(255,64,64,0.2); }
+.chip-blue { background: rgba(74,158,255,0.1); color: var(--blue); border: 1px solid rgba(74,158,255,0.2); }
+.chip-amb  { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.2); }
+
+/* ── TOKEN CARDS ── */
+.tokens-block { display: flex; flex-direction: column; gap: 8px; }
+
+.token-card {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.token-card:hover { border-color: var(--border2); }
+
+.token-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+.token-agent {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.token-tag {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.token-body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+
+.token-cell {
+  background: var(--bg2);
+  padding: 8px 12px;
+}
+
+.token-cell-key {
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.token-cell-val {
+  font-size: 10px;
+  color: var(--ink);
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.token-ttl {
+  padding: 6px 14px;
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+}
+
+.ttl-bar { height: 2px; background: var(--border); border-radius: 1px; flex: 1; margin: 0 10px; overflow: hidden; }
+.ttl-fill { height: 100%; border-radius: 1px; transition: width 1s linear; }
+
+.ttl-text { font-size: 8px; letter-spacing: 1px; color: var(--ink3); white-space: nowrap; }
+
+/* ══════════════════════════════════════════
+   METRICS ROW
+══════════════════════════════════════════ */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.metric {
+  background: var(--bg2);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric::before {
+  content: attr(data-n);
+  position: absolute;
+  right: -10px;
+  bottom: -16px;
+  font-family: var(--display);
+  font-size: 90px;
+  color: rgba(255,255,255,0.02);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.metric-label {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.metric-val {
+  font-family: var(--display);
+  font-size: 52px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.metric-val.lime { color: var(--lime); }
+.metric-val.red  { color: var(--red); }
+
+.metric-sub { font-size: 9px; color: var(--ink3); margin-top: 6px; }
+
+/* ══════════════════════════════════════════
+   PIPELINE VISUALIZER
+══════════════════════════════════════════ */
+.pipeline-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pipeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pipeline-status {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.pipeline-body { padding: 32px 24px 24px; }
+
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  position: relative;
+}
+
+.node-box {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: all 0.3s;
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+}
+
+.node-label {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  text-align: center;
+}
+
+.node-connector {
+  position: absolute;
+  top: 32px;
+  left: 64px;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+  z-index: 1;
+  overflow: hidden;
+}
+
+.node-connector-fill {
+  height: 100%;
+  background: var(--lime);
+  width: 0%;
+  transition: width 0.6s ease;
+  box-shadow: 0 0 8px var(--lime);
+}
+
+.node-connector-fill.blocked {
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+}
+
+/* Node states */
+.flow-node.active .node-box {
+  border-color: var(--lime);
+  background: var(--lime-dim);
+  box-shadow: 0 0 24px rgba(200,241,53,0.15), inset 0 0 24px rgba(200,241,53,0.05);
+}
+
+.flow-node.blocked-node .node-box {
+  border-color: var(--red);
+  background: var(--red-dim);
+  animation: shake 0.4s ease;
+}
+
+.flow-node.done .node-box {
+  border-color: rgba(200,241,53,0.3);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+.flow-log-area {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 14px 16px;
+  font-size: 11px;
+  color: var(--ink2);
+  line-height: 1.9;
+  min-height: 72px;
+  font-family: var(--mono);
+}
+
+.log-line-ok   { color: var(--lime); }
+.log-line-err  { color: var(--red); }
+.log-line-info { color: var(--ink2); }
+
+/* ── DEMO CONTROLS ── */
+.demo-controls {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.action-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border-radius: 2px;
+  border: 1px solid;
+  transition: all 0.15s;
+  font-weight: 700;
+}
+
+.action-ok {
+  border-color: rgba(200,241,53,0.3);
+  color: var(--lime);
+  background: var(--lime-dim);
+}
+
+.action-ok:hover { background: rgba(200,241,53,0.2); }
+
+.action-no {
+  border-color: rgba(255,64,64,0.3);
+  color: var(--red);
+  background: var(--red-dim);
+}
+
+.action-no:hover { background: rgba(255,64,64,0.2); }
+
+.action-auto {
+  border-color: var(--border2);
+  color: var(--ink2);
+  background: transparent;
+  margin-left: auto;
+}
+
+.action-auto:hover { border-color: var(--ink2); color: var(--ink); }
+
+/* ══════════════════════════════════════════
+   VERDICT PANEL
+══════════════════════════════════════════ */
+.verdict-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.verdict-panel.is-allowed { border-color: rgba(200,241,53,0.3); }
+.verdict-panel.is-blocked  { border-color: rgba(255,64,64,0.3); }
+
+.verdict-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.verdict-badge {
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+
+.verdict-badge.ok  { color: var(--lime); }
+.verdict-badge.err { color: var(--red); }
+
+.verdict-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+
+.verdict-cell {
+  background: var(--bg2);
+  padding: 14px 20px;
+}
+
+.verdict-cell-key {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.verdict-cell-val {
+  font-size: 12px;
+  color: var(--ink);
+  font-weight: 700;
+  word-break: break-all;
+}
+
+/* ── OPA REGO INSET ── */
+.rego-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 16px 20px;
+  font-size: 11px;
+  line-height: 1.9;
+  color: #6e7280;
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.rego-heading {
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.rk { color: #7aa2f7; }   /* keyword */
+.rs { color: #9ece6a; }   /* string  */
+.rv { color: #bb9af7; }   /* var     */
+.rc { color: #565f89; }   /* comment */
+.rg { color: var(--lime); font-weight: 700; }   /* true    */
+.rr { color: var(--red);  font-weight: 700; }   /* false   */
+
+/* ══════════════════════════════════════════
+   AUDIT LOG
+══════════════════════════════════════════ */
+.audit-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.audit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.audit-counts {
+  display: flex;
+  gap: 20px;
+  font-size: 10px;
+}
+
+.count-ok  { color: var(--lime); font-weight: 700; }
+.count-err { color: var(--red);  font-weight: 700; }
+
+.audit-table-header {
+  display: grid;
+  grid-template-columns: 28px 140px 70px 70px 1fr 80px;
+  gap: 12px;
+  padding: 8px 24px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+
+.audit-feed {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.audit-feed::-webkit-scrollbar { width: 3px; }
+.audit-feed::-webkit-scrollbar-track { background: transparent; }
+.audit-feed::-webkit-scrollbar-thumb { background: var(--border2); }
+
+.audit-row {
+  display: grid;
+  grid-template-columns: 28px 140px 70px 70px 1fr 80px;
+  gap: 12px;
+  padding: 11px 24px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  transition: background 0.1s;
+  animation: row-in 0.35s ease;
+}
+
+@keyframes row-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.audit-row:hover { background: var(--bg3); }
+.audit-row:last-child { border-bottom: none; }
+
+.verdict-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.vi-ok  { background: var(--lime-dim); color: var(--lime); }
+.vi-err { background: var(--red-dim);  color: var(--red); }
+
+.audit-agent { font-size: 9px; color: var(--ink2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.audit-action { font-size: 10px; font-weight: 700; color: var(--ink); }
+.audit-ticker { font-size: 10px; color: var(--ink2); }
+.audit-rule { font-size: 9px; color: var(--ink3); font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.audit-time { font-size: 9px; color: var(--ink3); text-align: right; }
+
+.audit-empty {
+  padding: 48px 24px;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   JWT INSPECTOR
+══════════════════════════════════════════ */
+.jwt-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.jwt-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+.jwt-tab {
+  padding: 12px 20px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  border-right: 1px solid var(--border);
+  transition: background 0.15s, color 0.15s;
+  flex: 1;
+  text-align: center;
+}
+
+.jwt-tab.active { background: var(--bg3); color: var(--lime); }
+.jwt-tab:hover:not(.active) { background: var(--bg3); color: var(--ink2); }
+
+.jwt-body { padding: 20px 24px; }
+
+.jwt-string {
+  font-size: 10px;
+  line-height: 1.7;
+  word-break: break-all;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 2px;
+  border: 1px solid var(--border);
+}
+
+.jwt-h { color: #f7768e; }
+.jwt-p { color: #9ece6a; }
+.jwt-s { color: #7aa2f7; }
+.jwt-dot { color: var(--ink3); }
+
+.jwt-claims {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.jwt-claim {
+  background: var(--bg2);
+  padding: 10px 14px;
+}
+
+.jwt-claim-k {
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.jwt-claim-v {
+  font-size: 10px;
+  color: var(--ink);
+  font-weight: 700;
+  word-break: break-all;
+}
+
+/* ══════════════════════════════════════════
+   STACK CALLOUT (bottom)
+══════════════════════════════════════════ */
+.stack-strip {
+  border-top: 1px solid var(--border);
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+
+.stack-items { display: flex; gap: 24px; }
+
+.stack-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stack-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ink3);
+}
+
+.replace-note {
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 1px;
+}
+
+/* ══════════════════════════════════════════
+   UTILITY
+══════════════════════════════════════════ */
+.hidden { display: none !important; }
+
+.divider {
+  height: 1px;
+  background: var(--border);
+}
+
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { border-top: 1px solid var(--border); }
+  .dashboard { grid-template-columns: 1fr; }
+  .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+  .metrics-row { grid-template-columns: repeat(2, 1fr); }
+  .verdict-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ TICKER TAPE ═══════════════════════ -->
+<div class="ticker-tape">
+  <div class="ticker-track" id="ticker-track">
+    <!-- duplicated for seamless loop -->
+    <span class="tick-item">AAPL <span class="tick-up" id="p-aapl">$187.34</span> <span class="tick-up">+2.1%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">GOOGL <span class="tick-dn" id="p-googl">$141.22</span> <span class="tick-dn">-0.8%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">MSFT <span class="tick-up" id="p-msft">$412.87</span> <span class="tick-up">+1.4%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">TSLA <span class="tick-dn" id="p-tsla">$254.18</span> <span class="tick-dn">-3.2%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">NVDA <span class="tick-up" id="p-nvda">$875.43</span> <span class="tick-up">+4.7%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">OPA <span class="tick-up">ONLINE</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">ALPACA <span style="color:#febc2e">PAPER MODE</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">PE/AAPL <span id="p-pe" class="tick-up">28.4x</span></span>
+    <span class="tick-sep">///</span>
+    <!-- duplicate for seamless -->
+    <span class="tick-item">AAPL <span class="tick-up">$187.34</span> <span class="tick-up">+2.1%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">GOOGL <span class="tick-dn">$141.22</span> <span class="tick-dn">-0.8%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">MSFT <span class="tick-up">$412.87</span> <span class="tick-up">+1.4%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">TSLA <span class="tick-dn">$254.18</span> <span class="tick-dn">-3.2%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">NVDA <span class="tick-up">$875.43</span> <span class="tick-up">+4.7%</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">OPA <span class="tick-up">ONLINE</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">ALPACA <span style="color:#febc2e">PAPER MODE</span></span>
+    <span class="tick-sep">///</span>
+    <span class="tick-item">PE/AAPL <span class="tick-up">28.4x</span></span>
+    <span class="tick-sep">///</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ NAV ═══════════════════════ -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-text">CapabilityGuard</span>
+    <span class="nav-logo-sub">// ArmorClaw Engine</span>
+  </div>
+  <div class="nav-center">
+    <span>Gateway</span>
+    <span>OPA</span>
+    <span>Agents</span>
+    <span>Audit</span>
+  </div>
+  <div class="nav-pill">
+    <div class="pulse-dot"></div>
+    ArmorClaw Active
+  </div>
+</nav>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="hero-left">
+    <div>
+      <div class="hero-kicker">Mandate-scoped agent delegation</div>
+      <h1 class="hero-headline">
+        <span class="ghost">Mandate,</span>
+        <span class="accent">Not</span>
+        Trust.
+      </h1>
+      <p class="hero-desc">
+        A financial AI agent that thinks and acts — with a cryptographic ArmorClaw layer
+        that validates every sub-agent action against the original mandate before
+        execution reaches Alpaca. Capabilities are bounded by JWT, enforced by OPA Rego.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-demo" onclick="runFullDemo()">▶ Run Full Demo</button>
+        <button class="btn-ghost" onclick="clearAll()">Reset State</button>
+      </div>
+    </div>
+
+    <!-- Live stat bar bottom of hero -->
+    <div style="display:flex;gap:40px;border-top:1px solid var(--border);padding-top:24px;margin-top:40px;">
+      <div>
+        <div style="font-size:8px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;margin-bottom:4px;">Validated</div>
+        <div style="font-family:var(--display);font-size:36px;color:var(--ink)" id="hs-total">0</div>
+      </div>
+      <div>
+        <div style="font-size:8px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;margin-bottom:4px;">Allowed</div>
+        <div style="font-family:var(--display);font-size:36px;color:var(--lime)" id="hs-allowed">0</div>
+      </div>
+      <div>
+        <div style="font-size:8px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;margin-bottom:4px;">Blocked</div>
+        <div style="font-family:var(--display);font-size:36px;color:var(--red)" id="hs-blocked">0</div>
+      </div>
+      <div>
+        <div style="font-size:8px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;margin-bottom:4px;">Tokens</div>
+        <div style="font-family:var(--display);font-size:36px;color:var(--ink)" id="hs-tokens">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANDATE TERMINAL -->
+  <div class="hero-right">
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <div class="term-dot term-close"></div>
+        <div class="term-dot term-min"></div>
+        <div class="term-dot term-max"></div>
+        <span class="terminal-title">mandate-parser — orchestrator:8001</span>
+      </div>
+      <div class="terminal-body">
+        <div>
+          <div class="term-label">User Mandate</div>
+          <textarea class="mandate-textarea" id="mandate-input" rows="4"
+            placeholder="Research AAPL and buy 5 shares if PE ratio is under 25..."></textarea>
+        </div>
+
+        <div>
+          <div class="term-label">Quick Mandates</div>
+          <div class="presets">
+            <div class="preset" onclick="setMandate('Research AAPL and buy 5 shares if PE ratio is under 25')">
+              <span class="preset-icon">▸</span>
+              Research AAPL and buy 5 shares if PE ratio is under 25
+            </div>
+            <div class="preset" onclick="setMandate('Monitor tech portfolio and rebalance if AAPL drops more than 5%')">
+              <span class="preset-icon">▸</span>
+              Monitor tech portfolio, rebalance if AAPL drops more than 5%
+            </div>
+            <div class="preset" onclick="setMandate('Buy MSFT below $400 and sell TSLA if it rises above $280')">
+              <span class="preset-icon">▸</span>
+              Buy MSFT below $400 and sell TSLA above $280
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+          <span style="font-size:8px;letter-spacing:1.5px;color:var(--ink3);text-transform:uppercase;" id="parse-status-text">Not parsed</span>
+          <button class="parse-btn" onclick="parseMandate()">Parse Mandate →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ DASHBOARD ═══════════════════════ -->
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- INTENT GRAPH -->
+    <div class="intent-block">
+      <div class="eyebrow">Intent Graph</div>
+      <div id="intent-content">
+        <div style="font-size:10px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;text-align:center;padding:32px 0;">
+          Parse a mandate to see intent graph
+        </div>
+      </div>
+    </div>
+
+    <!-- TOKENS -->
+    <div class="tokens-block">
+      <div class="eyebrow">Capability Tokens</div>
+      <div id="token-list">
+        <div style="font-size:10px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;text-align:center;padding:24px;border:1px dashed var(--border);border-radius:3px;">
+          Tokens minted after parsing
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- METRICS -->
+    <div class="metrics-row">
+      <div class="metric" data-n="0">
+        <div class="metric-label">Validated</div>
+        <div class="metric-val" id="m-total">0</div>
+        <div class="metric-sub">Total this session</div>
+      </div>
+      <div class="metric" data-n="0">
+        <div class="metric-label">Allowed</div>
+        <div class="metric-val lime" id="m-allowed">0</div>
+        <div class="metric-sub">Within token scope</div>
+      </div>
+      <div class="metric" data-n="0">
+        <div class="metric-label">Blocked</div>
+        <div class="metric-val red" id="m-blocked">0</div>
+        <div class="metric-sub">Policy violations</div>
+      </div>
+      <div class="metric" data-n="0">
+        <div class="metric-label">Active Tokens</div>
+        <div class="metric-val" id="m-tokens">0</div>
+        <div class="metric-sub">JWT sub-agents live</div>
+      </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="pipeline-block">
+      <div class="pipeline-header">
+        <div class="eyebrow" style="margin:0">Agent Pipeline</div>
+        <div class="pipeline-status" id="pipeline-status">Idle</div>
+      </div>
+      <div class="pipeline-body">
+        <div class="flow-row" id="flow-row">
+          <div class="flow-node" id="fn-orchestrator">
+            <div class="node-box">⚙</div>
+            <div class="node-label">Orchestrator</div>
+            <div class="node-connector"><div class="node-connector-fill" id="fc-0"></div></div>
+          </div>
+          <div class="flow-node" id="fn-agent">
+            <div class="node-box">🔍</div>
+            <div class="node-label">Agent</div>
+            <div class="node-connector"><div class="node-connector-fill" id="fc-1"></div></div>
+          </div>
+          <div class="flow-node" id="fn-armorclaw">
+            <div class="node-box">🛡</div>
+            <div class="node-label">ArmorClaw</div>
+            <div class="node-connector"><div class="node-connector-fill" id="fc-2"></div></div>
+          </div>
+          <div class="flow-node" id="fn-execution">
+            <div class="node-box">⚡</div>
+            <div class="node-label">Execution</div>
+            <div class="node-connector"><div class="node-connector-fill" id="fc-3"></div></div>
+          </div>
+          <div class="flow-node" id="fn-alpaca">
+            <div class="node-box">📈</div>
+            <div class="node-label">Alpaca API</div>
+          </div>
+        </div>
+        <div class="flow-log-area" id="flow-log">
+          <span class="log-line-info">// Trigger an action to see pipeline execution</span>
+        </div>
+      </div>
+      <div class="demo-controls">
+        <button class="action-btn action-ok" onclick="act('READ','AAPL',0,'research-agent')">✓ READ AAPL</button>
+        <button class="action-btn action-ok" onclick="act('BUY','AAPL',5,'execution-agent')">✓ BUY AAPL ×5</button>
+        <button class="action-btn action-no" onclick="act('SELL','AAPL',5,'execution-agent')">✗ SELL AAPL</button>
+        <button class="action-btn action-no" onclick="act('SEND_DATA','*',0,'report-agent','external')">✗ POST External</button>
+        <button class="action-btn action-no" onclick="act('BUY','MSFT',2,'execution-agent')">✗ BUY MSFT</button>
+        <button class="action-btn action-no" onclick="act('BUY','AAPL',50,'execution-agent')">✗ BUY AAPL ×50</button>
+        <button class="action-btn action-auto" onclick="runFullDemo()">▶ Auto Demo</button>
+      </div>
+    </div>
+
+    <!-- VERDICT -->
+    <div class="verdict-panel" id="verdict-panel">
+      <div class="verdict-header">
+        <div class="eyebrow" style="margin:0">ArmorClaw Gateway Response</div>
+        <div style="font-size:8px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;">POST /validate</div>
+      </div>
+      <div id="verdict-placeholder" style="padding:32px 24px;text-align:center;font-size:10px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;">
+        Trigger an action above to see gateway verdict
+      </div>
+      <div id="verdict-body" class="hidden">
+        <div class="verdict-body" id="verdict-cells"></div>
+      </div>
+
+      <!-- OPA Rego -->
+      <div class="rego-block" style="margin:0 20px 20px;border-radius:2px;">
+        <div class="rego-heading">OPA Rego — financial_policy.rego</div>
+<span class="rk">package</span> financial<br><br>
+<span class="rk">default</span> allow = <span class="rr">false</span><br><br>
+allow {<br>
+&nbsp;&nbsp;input.action <span class="rk">in</span> input.token.allowed_actions<br>
+&nbsp;&nbsp;ticker_allowed<br>
+&nbsp;&nbsp;qty_within_limit<br>
+&nbsp;&nbsp;destination_allowed<br>
+}<br><br>
+<span class="rc">// Violations surface in audit log with reason</span><br>
+violation[<span class="rs">"action_not_permitted"</span>] { <span class="rk">not</span> action_permitted }<br>
+violation[<span class="rs">"ticker_out_of_scope"</span>]   { <span class="rk">not</span> ticker_allowed }<br>
+violation[<span class="rs">"qty_exceeded"</span>]           { <span class="rk">not</span> qty_within_limit }<br>
+violation[<span class="rs">"unauthorized_destination"</span>] { input.action == <span class="rs">"SEND_DATA"</span>; input.destination != input.token.destination_scope }
+      </div>
+    </div>
+
+    <!-- AUDIT LOG -->
+    <div class="audit-block">
+      <div class="audit-head">
+        <div class="eyebrow" style="margin:0">Audit Log</div>
+        <div class="audit-counts">
+          <span><span class="count-ok" id="c-ok">0</span> allowed</span>
+          <span><span class="count-err" id="c-err">0</span> blocked</span>
+        </div>
+      </div>
+      <div class="audit-table-header">
+        <span>V</span>
+        <span>Agent</span>
+        <span>Action</span>
+        <span>Ticker</span>
+        <span>Policy Rule</span>
+        <span style="text-align:right">Time</span>
+      </div>
+      <div class="audit-feed" id="audit-feed">
+        <div class="audit-empty">No actions logged yet</div>
+      </div>
+    </div>
+
+    <!-- JWT INSPECTOR -->
+    <div class="jwt-block">
+      <div class="eyebrow" style="margin:16px 24px 0;padding-bottom:0;">JWT Token Inspector</div>
+      <div class="jwt-tabs" id="jwt-tabs">
+        <div class="jwt-tab" style="color:var(--ink3);font-style:italic;">Parse a mandate to inspect tokens</div>
+      </div>
+      <div class="jwt-body" id="jwt-body">
+        <div style="font-size:10px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;text-align:center;padding:24px 0;">
+          Tokens appear here after parsing
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- STACK STRIP -->
+<div class="stack-strip">
+  <div class="stack-items">
+    <div class="stack-item"><div class="stack-dot"></div>FastAPI</div>
+    <div class="stack-item"><div class="stack-dot"></div>OpenClaw</div>
+    <div class="stack-item"><div class="stack-dot"></div>OPA Rego</div>
+    <div class="stack-item"><div class="stack-dot"></div>PyJWT HS256</div>
+    <div class="stack-item"><div class="stack-dot"></div>Alpaca Markets Paper</div>
+    <div class="stack-item"><div class="stack-dot"></div>SQLite Audit</div>
+    <div class="stack-item"><div class="stack-dot"></div>WebSocket Live Feed</div>
+  </div>
+  <div class="replace-note">⚠ Replace: OPENAI_API_KEY · ALPACA_API_KEY · JWT_SECRET</div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// CONFIG — point at your real backend when deployed
+// ════════════════════════════════════════════════════════════
+const ORCHESTRATOR = window.VITE_ORCHESTRATOR_URL || 'http://localhost:8001';
+const GATEWAY      = window.VITE_GATEWAY_URL      || 'http://localhost:8000';
+// WebSocket for live audit log
+let ws = null;
+
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+const S = {
+  intentGraph: null,
+  tokens: {},          // agent_id → jwt string
+  tokenMeta: [],       // [{agent_id, allowed_actions, ticker_scope, max_qty, ...}]
+  tokenExpiry: null,
+  metrics: { total: 0, allowed: 0, blocked: 0 },
+  auditLog: [],
+};
+
+// ════════════════════════════════════════════════════════════
+// LIVE TICKER
+// ════════════════════════════════════════════════════════════
+const prices = { AAPL: 187.34, GOOGL: 141.22, MSFT: 412.87, TSLA: 254.18, NVDA: 875.43, PE: 28.4 };
+function tickerUpdate() {
+  const ids = { AAPL: 'p-aapl', GOOGL: 'p-googl', MSFT: 'p-msft', TSLA: 'p-tsla', NVDA: 'p-nvda' };
+  Object.entries(ids).forEach(([sym, id]) => {
+    prices[sym] += (Math.random() - 0.5) * 0.5;
+    const el = document.getElementById(id);
+    if (el) el.textContent = '$' + Math.abs(prices[sym]).toFixed(2);
+  });
+  prices.PE += (Math.random() - 0.5) * 0.05;
+  const pe = document.getElementById('p-pe');
+  if (pe) pe.textContent = prices.PE.toFixed(1) + 'x';
+}
+setInterval(tickerUpdate, 2000);
+
+// ════════════════════════════════════════════════════════════
+// WEBSOCKET — live audit feed from real backend
+// ════════════════════════════════════════════════════════════
+function connectWS() {
+  try {
+    const url = GATEWAY.replace('http', 'ws') + '/ws/audit';
+    ws = new WebSocket(url);
+    ws.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data.type === 'history') {
+        data.entries.reverse().forEach(e => addAuditRow(e, false));
+      } else if (data.type === 'entry') {
+        addAuditRow(data, true);
+        updateMetricCounters(data.allowed);
+      }
+    };
+    ws.onerror = () => {}; // silent fallback to simulation mode
+  } catch(e) {}
+}
+connectWS();
+
+// ════════════════════════════════════════════════════════════
+// MANDATE → INTENT GRAPH (calls real orchestrator or simulates)
+// ════════════════════════════════════════════════════════════
+function setMandate(t) { document.getElementById('mandate-input').value = t; }
+
+async function parseMandate() {
+  const raw = document.getElementById('mandate-input').value.trim();
+  if (!raw) return;
+  setParseStatus('Parsing...');
+
+  try {
+    // Try real backend
+    const res = await fetch(`${ORCHESTRATOR}/run-mandate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mandate: raw }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      S.intentGraph = data.intent_graph;
+      S.tokens = data.tokens;
+      // Parse TTL from first JWT
+      const firstTok = Object.values(data.tokens)[0];
+      if (firstTok) {
+        const payload = JSON.parse(atob(firstTok.split('.')[1]));
+        S.tokenExpiry = payload.exp;
+        S.tokenMeta = buildTokenMeta(data.intent_graph, data.tokens);
+      }
+      setParseStatus('Parsed via real API ✓');
+      renderAll();
+      return;
+    }
+  } catch (e) {}
+
+  // Fallback: simulate locally
+  simulateParse(raw);
+}
+
+function simulateParse(raw) {
+  const lower = raw.toLowerCase();
+  const hasBuy = lower.includes('buy') || lower.includes('rebalance');
+  const hasSell = lower.includes('sell') || lower.includes('rebalance');
+  let tickers = [];
+  ['AAPL','MSFT','GOOGL','TSLA','NVDA'].forEach(t => {
+    if (lower.includes(t.toLowerCase())) tickers.push(t);
+  });
+  if (lower.includes('tech')) tickers = tickers.length ? tickers : ['AAPL'];
+  if (!tickers.length) tickers = ['AAPL'];
+
+  const qtyMatch = raw.match(/(\d+)\s*shares?/i);
+  const maxQty = qtyMatch ? parseInt(qtyMatch[1]) : 10;
+
+  let condition = 'PE_RATIO < 25';
+  if (lower.includes('drops more than')) {
+    const pct = raw.match(/(\d+)%/);
+    condition = `PRICE_DROP > ${pct ? pct[1] : 5}%`;
+  } else if (lower.includes('below')) {
+    const p = raw.match(/\$(\d+)/);
+    condition = `PRICE < $${p ? p[1] : '400'}`;
+  } else if (lower.includes('above')) {
+    const p = raw.match(/\$(\d+)/);
+    condition = `PRICE > $${p ? p[1] : '280'}`;
+  }
+
+  const allowed_actions = ['READ', 'LOG'];
+  if (hasBuy) allowed_actions.push('BUY');
+  if (hasSell) allowed_actions.push('SELL');
+  const blocked_actions = ['SEND_DATA'];
+  if (!hasSell) blocked_actions.push('SELL');
+
+  S.intentGraph = {
+    mandate_summary: raw.length > 70 ? raw.slice(0, 70) + '…' : raw,
+    allowed_tickers: tickers,
+    allowed_actions,
+    blocked_actions,
+    max_qty: maxQty,
+    condition,
+    destination_scope: 'internal',
+  };
+
+  // Simulate JWTs
+  const now = Math.floor(Date.now() / 1000);
+  S.tokenExpiry = now + 300;
+  const execActions = allowed_actions.filter(a => a !== 'LOG' && a !== 'READ');
+
+  S.tokenMeta = [
+    { agent_id: 'research-agent-01',  label: 'Research',  icon: '🔍', color: 'lime',  allowed_actions: ['READ'],                   ticker_scope: tickers, max_qty: 0,      destination_scope: 'internal', exp: S.tokenExpiry, iat: now },
+    { agent_id: 'execution-agent-01', label: 'Execution', icon: '⚡', color: 'amber', allowed_actions: execActions.length ? execActions : ['BUY'], ticker_scope: tickers, max_qty: maxQty, destination_scope: 'internal', exp: S.tokenExpiry, iat: now },
+    { agent_id: 'report-agent-01',    label: 'Report',    icon: '📋', color: 'blue',  allowed_actions: ['LOG'],                    ticker_scope: ['*'],    max_qty: 0,      destination_scope: 'internal', exp: S.tokenExpiry, iat: now },
+  ];
+
+  // Build fake JWTs
+  S.tokenMeta.forEach(tm => {
+    const h = btoa(JSON.stringify({alg:'HS256',typ:'JWT'})).replace(/=/g,'');
+    const p = btoa(JSON.stringify({ agent_id: tm.agent_id, allowed_actions: tm.allowed_actions, ticker_scope: tm.ticker_scope, max_qty: tm.max_qty, destination_scope: tm.destination_scope, exp: tm.exp, iat: tm.iat })).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+    const s = btoa('CG-' + tm.agent_id.slice(0,8)).replace(/=/g,'').slice(0,22);
+    S.tokens[tm.agent_id] = `${h}.${p}.${s}`;
+  });
+
+  setParseStatus('Parsed (simulation) ✓');
+  renderAll();
+}
+
+function buildTokenMeta(ig, tokens) {
+  const execActions = ig.allowed_actions.filter(a => a !== 'LOG' && a !== 'READ');
+  return [
+    { agent_id: 'research-agent-01',  label: 'Research',  icon: '🔍', color: 'lime',  allowed_actions: ['READ'],           ticker_scope: ig.allowed_tickers, max_qty: 0,          destination_scope: 'internal' },
+    { agent_id: 'execution-agent-01', label: 'Execution', icon: '⚡', color: 'amber', allowed_actions: execActions,        ticker_scope: ig.allowed_tickers, max_qty: ig.max_qty, destination_scope: 'internal' },
+    { agent_id: 'report-agent-01',    label: 'Report',    icon: '📋', color: 'blue',  allowed_actions: ['LOG'],            ticker_scope: ['*'],              max_qty: 0,          destination_scope: 'internal' },
+  ];
+}
+
+function setParseStatus(txt) {
+  document.getElementById('parse-status-text').textContent = txt;
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDER ALL PANELS
+// ════════════════════════════════════════════════════════════
+function renderAll() {
+  renderIntentGraph();
+  renderTokens();
+  renderJWT();
+  document.getElementById('m-tokens').textContent = S.tokenMeta.length;
+  document.getElementById('hs-tokens').textContent = S.tokenMeta.length;
+  startTTLCountdown();
+}
+
+function renderIntentGraph() {
+  const ig = S.intentGraph;
+  document.getElementById('intent-content').innerHTML = `
+    <div class="intent-grid">
+      <div class="intent-row">
+        <span class="intent-key">Summary</span>
+        <span class="intent-val" style="font-size:10px;font-weight:400;line-height:1.5">${ig.mandate_summary}</span>
+      </div>
+      <div class="intent-row">
+        <span class="intent-key">Tickers</span>
+        <div class="chip-group">${ig.allowed_tickers.map(t=>`<span class="chip chip-blue">${t}</span>`).join('')}</div>
+      </div>
+      <div class="intent-row">
+        <span class="intent-key">Allowed</span>
+        <div class="chip-group">${ig.allowed_actions.map(a=>`<span class="chip chip-lime">${a}</span>`).join('')}</div>
+      </div>
+      <div class="intent-row">
+        <span class="intent-key">Blocked</span>
+        <div class="chip-group">${ig.blocked_actions.map(a=>`<span class="chip chip-red">${a}</span>`).join('')}</div>
+      </div>
+      <div class="intent-row">
+        <span class="intent-key">Condition</span>
+        <span class="intent-val"><span class="chip chip-amb">${ig.condition}</span></span>
+      </div>
+      <div class="intent-row" style="border-bottom:none">
+        <span class="intent-key">Max Qty / Dest</span>
+        <span class="intent-val">${ig.max_qty} shares · ${ig.destination_scope}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderTokens() {
+  const colorMap = { lime: 'chip-lime', amber: 'chip-amb', blue: 'chip-blue' };
+  document.getElementById('token-list').innerHTML = S.tokenMeta.map(tm => `
+    <div class="token-card">
+      <div class="token-head">
+        <span class="token-agent">${tm.icon} ${tm.label} Agent</span>
+        <span class="token-tag ${colorMap[tm.color] || 'chip-lime'}">${tm.agent_id.split('-')[0]}</span>
+      </div>
+      <div class="token-body-grid">
+        <div class="token-cell">
+          <div class="token-cell-key">Actions</div>
+          <div class="token-cell-val" style="color:var(--lime)">${tm.allowed_actions.join(', ')}</div>
+        </div>
+        <div class="token-cell">
+          <div class="token-cell-key">Tickers</div>
+          <div class="token-cell-val">${tm.ticker_scope.join(', ')}</div>
+        </div>
+        <div class="token-cell">
+          <div class="token-cell-key">Max Qty</div>
+          <div class="token-cell-val">${tm.max_qty === 0 ? '∞' : tm.max_qty}</div>
+        </div>
+        <div class="token-cell">
+          <div class="token-cell-key">Destination</div>
+          <div class="token-cell-val">${tm.destination_scope}</div>
+        </div>
+      </div>
+      <div class="token-ttl">
+        <span class="ttl-text" id="ttl-text-${tm.agent_id}">300s</span>
+        <div class="ttl-bar">
+          <div class="ttl-fill" id="ttl-fill-${tm.agent_id}" style="width:100%;background:var(--lime)"></div>
+        </div>
+        <span class="ttl-text">JWT HS256</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function startTTLCountdown() {
+  const iv = setInterval(() => {
+    if (!S.tokenExpiry) { clearInterval(iv); return; }
+    const ttl = Math.max(0, S.tokenExpiry - Date.now() / 1000);
+    const pct = (ttl / 300) * 100;
+    S.tokenMeta.forEach(tm => {
+      const tt = document.getElementById('ttl-text-' + tm.agent_id);
+      const tf = document.getElementById('ttl-fill-' + tm.agent_id);
+      if (tt) tt.textContent = Math.round(ttl) + 's';
+      if (tf) {
+        tf.style.width = pct + '%';
+        tf.style.background = pct > 50 ? 'var(--lime)' : pct > 20 ? 'var(--amber)' : 'var(--red)';
+      }
+    });
+    if (ttl <= 0) clearInterval(iv);
+  }, 1000);
+}
+
+function renderJWT() {
+  const tabs = document.getElementById('jwt-tabs');
+  const body = document.getElementById('jwt-body');
+
+  tabs.innerHTML = S.tokenMeta.map((tm, i) =>
+    `<div class="jwt-tab ${i===0?'active':''}" onclick="switchJWT(${i})" id="jt-${i}">${tm.label}</div>`
+  ).join('');
+
+  body.innerHTML = S.tokenMeta.map((tm, i) => {
+    const jwt = S.tokens[tm.agent_id] || '—';
+    const parts = jwt.split('.');
+    return `
+      <div id="jc-${i}" style="display:${i===0?'block':'none'}">
+        <div class="jwt-string">
+          <span class="jwt-h">${parts[0]}</span><span class="jwt-dot">.</span><span class="jwt-p">${parts[1]}</span><span class="jwt-dot">.</span><span class="jwt-s">${parts[2] || ''}</span>
+        </div>
+        <div class="jwt-claims">
+          <div class="jwt-claim"><div class="jwt-claim-k">agent_id</div><div class="jwt-claim-v">${tm.agent_id}</div></div>
+          <div class="jwt-claim"><div class="jwt-claim-k">allowed_actions</div><div class="jwt-claim-v" style="color:var(--lime)">${tm.allowed_actions.join(', ')}</div></div>
+          <div class="jwt-claim"><div class="jwt-claim-k">ticker_scope</div><div class="jwt-claim-v">${tm.ticker_scope.join(', ')}</div></div>
+          <div class="jwt-claim"><div class="jwt-claim-k">max_qty</div><div class="jwt-claim-v">${tm.max_qty === 0 ? '∞' : tm.max_qty}</div></div>
+          <div class="jwt-claim"><div class="jwt-claim-k">destination</div><div class="jwt-claim-v">${tm.destination_scope}</div></div>
+          <div class="jwt-claim"><div class="jwt-claim-k">alg</div><div class="jwt-claim-v">HS256</div></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function switchJWT(idx) {
+  S.tokenMeta.forEach((_, i) => {
+    document.getElementById('jt-' + i)?.classList.toggle('active', i === idx);
+    const jc = document.getElementById('jc-' + i);
+    if (jc) jc.style.display = i === idx ? 'block' : 'none';
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// ACTION VALIDATION — tries real gateway, falls back to sim
+// ════════════════════════════════════════════════════════════
+async function act(action, ticker, qty, agentId, destination = 'internal') {
+  if (!S.tokenMeta.length) {
+    setMandate('Research AAPL and buy 5 shares if PE ratio is under 25');
+    simulateParse('Research AAPL and buy 5 shares if PE ratio is under 25');
+    setTimeout(() => act(action, ticker, qty, agentId, destination), 300);
+    return;
+  }
+
+  const agentToken = S.tokens[agentId + '-01'] || Object.values(S.tokens)[0];
+  let result;
+
+  try {
+    const res = await fetch(`${GATEWAY}/validate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent_id: agentId + '-01', token: agentToken, action, ticker, qty, destination }),
+    });
+    if (res.ok) {
+      result = await res.json();
+    }
+  } catch(e) {}
+
+  // Fallback simulation
+  if (!result) {
+    result = evaluateLocally(action, ticker, qty, agentId, destination);
+  }
+
+  animatePipeline(agentId, result.allowed);
+  showVerdict(result, action, ticker, qty, agentId);
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    // No WS — add locally
+    addAuditRow({
+      agent_id: agentId + '-01', action, ticker, qty,
+      allowed: result.allowed, violations: result.violations,
+      timestamp: Date.now() / 1000,
+    }, true);
+    updateMetricCounters(result.allowed);
+  }
+}
+
+function evaluateLocally(action, ticker, qty, agentId, destination) {
+  const prefix = agentId.replace('-agent', '');
+  const tm = S.tokenMeta.find(t => t.agent_id.includes(prefix));
+  if (!tm) return { allowed: false, violations: ['no_valid_token'], reason: 'No token for this agent. Parse a mandate first.' };
+
+  const violations = [];
+  if (!tm.allowed_actions.includes(action)) violations.push('action_not_permitted');
+  if (ticker && ticker !== '*' && !tm.ticker_scope.includes('*') && !tm.ticker_scope.includes(ticker)) violations.push('ticker_out_of_scope');
+  if (tm.max_qty > 0 && qty > tm.max_qty) violations.push('qty_exceeded');
+  if (action === 'SEND_DATA' && destination !== tm.destination_scope) violations.push('unauthorized_destination');
+  if (S.tokenExpiry && Date.now() / 1000 > S.tokenExpiry) violations.push('token_expired');
+
+  const allow = violations.length === 0;
+  const reasonMap = {
+    action_not_permitted: `'${action}' not in [${tm.allowed_actions.join(', ')}]`,
+    ticker_out_of_scope: `'${ticker}' not in [${tm.ticker_scope.join(', ')}]`,
+    qty_exceeded: `qty ${qty} > max_qty ${tm.max_qty}`,
+    unauthorized_destination: `destination '${destination}' ≠ '${tm.destination_scope}'`,
+    token_expired: 'JWT expired',
+    no_valid_token: 'No token found',
+  };
+  const reason = allow
+    ? `Within token scope. ${action === 'BUY' || action === 'SELL' ? 'Forwarding to Alpaca paper API.' : 'Proceeding.'}`
+    : violations.map(v => reasonMap[v] || v).join('; ');
+
+  return { allowed: allow, violations, reason };
+}
+
+// ════════════════════════════════════════════════════════════
+// PIPELINE ANIMATION
+// ════════════════════════════════════════════════════════════
+function animatePipeline(agentId, allowed) {
+  const allNodes = ['orchestrator','agent','armorclaw','execution','alpaca'];
+  allNodes.forEach(n => {
+    const el = document.getElementById('fn-' + n);
+    if (el) el.classList.remove('active','blocked-node','done');
+  });
+  [0,1,2,3].forEach(i => {
+    const el = document.getElementById('fc-' + i);
+    if (el) { el.style.width = '0%'; el.classList.remove('blocked'); }
+  });
+
+  const logEl = document.getElementById('flow-log');
+  logEl.innerHTML = '';
+  document.getElementById('pipeline-status').textContent = 'Running…';
+
+  const logLine = (msg, cls = 'log-line-info') => {
+    logEl.innerHTML += `<span class="${cls}">${msg}</span>\n`;
+  };
+
+  const agentNodeId = agentId.includes('research') ? 'agent' : agentId.includes('report') ? 'agent' : 'agent';
+
+  // Step 1
+  activate('fn-orchestrator');
+  logLine('→ Orchestrator dispatching to ' + agentId + '…');
+
+  setTimeout(() => {
+    fill('fc-0', false);
+    deactivate('fn-orchestrator', true);
+    activate('fn-' + agentNodeId);
+    logLine('→ Agent token validated, forming request…');
+  }, 400);
+
+  setTimeout(() => {
+    fill('fc-1', false);
+    deactivate('fn-' + agentNodeId, true);
+    activate('fn-armorclaw');
+    logLine('→ ArmorClaw OPA policy evaluation…');
+  }, 900);
+
+  setTimeout(() => {
+    fill('fc-2', !allowed);
+    deactivate('fn-armorclaw', true);
+    if (!allowed) {
+      document.getElementById('fn-execution')?.classList.add('blocked-node');
+      document.getElementById('fc-2').classList.add('blocked');
+      logLine('✗ BLOCKED by OPA policy — action rejected', 'log-line-err');
+      document.getElementById('pipeline-status').textContent = 'BLOCKED';
+      document.getElementById('pipeline-status').style.color = 'var(--red)';
+    } else {
+      activate('fn-execution');
+      logLine('✓ Policy passed — forwarding to Alpaca paper API…', 'log-line-ok');
+    }
+  }, 1400);
+
+  if (allowed) {
+    setTimeout(() => {
+      fill('fc-3', false);
+      deactivate('fn-execution', true);
+      activate('fn-alpaca');
+      logLine('✓ Alpaca paper order submitted', 'log-line-ok');
+      document.getElementById('pipeline-status').textContent = 'Completed ✓';
+      document.getElementById('pipeline-status').style.color = 'var(--lime)';
+    }, 2000);
+    setTimeout(() => deactivate('fn-alpaca', true), 3200);
+  }
+}
+
+function activate(id) { document.getElementById(id)?.classList.add('active'); }
+function deactivate(id, done) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('active');
+  if (done) el.classList.add('done');
+}
+function fill(id, blocked) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.width = '100%';
+  if (blocked) el.classList.add('blocked');
+}
+
+// ════════════════════════════════════════════════════════════
+// VERDICT PANEL
+// ════════════════════════════════════════════════════════════
+function showVerdict(result, action, ticker, qty, agentId) {
+  const panel = document.getElementById('verdict-panel');
+  const ph = document.getElementById('verdict-placeholder');
+  const body = document.getElementById('verdict-body');
+  const cells = document.getElementById('verdict-cells');
+
+  ph.classList.add('hidden');
+  body.classList.remove('hidden');
+
+  panel.className = 'verdict-panel ' + (result.allowed ? 'is-allowed' : 'is-blocked');
+
+  const header = panel.querySelector('.verdict-header');
+  // Insert or update verdict badge
+  let badge = panel.querySelector('.verdict-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.className = 'verdict-badge';
+    header.appendChild(badge);
+  }
+  badge.className = 'verdict-badge ' + (result.allowed ? 'ok' : 'err');
+  badge.textContent = result.allowed ? '✓ ALLOWED' : '✗ BLOCKED';
+
+  cells.innerHTML = `
+    <div class="verdict-cell">
+      <div class="verdict-cell-key">Agent</div>
+      <div class="verdict-cell-val">${agentId}-01</div>
+    </div>
+    <div class="verdict-cell">
+      <div class="verdict-cell-key">Action</div>
+      <div class="verdict-cell-val">${action}${qty > 0 ? ' ×' + qty : ''}</div>
+    </div>
+    <div class="verdict-cell">
+      <div class="verdict-cell-key">Ticker</div>
+      <div class="verdict-cell-val">${ticker || '—'}</div>
+    </div>
+    <div class="verdict-cell">
+      <div class="verdict-cell-key">Violations</div>
+      <div class="verdict-cell-val" style="color:${result.violations.length ? 'var(--red)' : 'var(--lime)'}">${result.violations.length ? result.violations.join(', ') : 'none'}</div>
+    </div>
+    <div class="verdict-cell" style="grid-column:1/-1">
+      <div class="verdict-cell-key">Reason</div>
+      <div class="verdict-cell-val" style="font-size:11px;font-weight:400;line-height:1.6">${result.reason}</div>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════════
+// AUDIT LOG
+// ════════════════════════════════════════════════════════════
+function addAuditRow(entry, animate) {
+  const feed = document.getElementById('audit-feed');
+  const empty = feed.querySelector('.audit-empty');
+  if (empty) empty.remove();
+
+  const allowed = entry.allowed;
+  const vios = entry.violations || [];
+  const ts = new Date(entry.timestamp * 1000).toLocaleTimeString();
+
+  const row = document.createElement('div');
+  row.className = 'audit-row';
+  if (!animate) row.style.animation = 'none';
+  row.innerHTML = `
+    <div class="verdict-icon ${allowed ? 'vi-ok' : 'vi-err'}">${allowed ? '✓' : '✗'}</div>
+    <div class="audit-agent">${entry.agent_id}</div>
+    <div class="audit-action">${entry.action}</div>
+    <div class="audit-ticker">${entry.ticker || '—'}</div>
+    <div class="audit-rule">${vios.length ? vios.join(', ') : 'within_scope'}</div>
+    <div class="audit-time">${ts}</div>
+  `;
+  feed.insertBefore(row, feed.firstChild);
+}
+
+function updateMetricCounters(allowed) {
+  S.metrics.total++;
+  if (allowed) S.metrics.allowed++;
+  else S.metrics.blocked++;
+
+  ['total','allowed','blocked'].forEach(k => {
+    document.getElementById('m-' + k).textContent = S.metrics[k];
+    document.getElementById('hs-' + k === 'hs-total' ? 'hs-total' : 'hs-' + k).textContent = S.metrics[k];
+  });
+  document.getElementById('hs-total').textContent = S.metrics.total;
+  document.getElementById('c-ok').textContent = S.metrics.allowed;
+  document.getElementById('c-err').textContent = S.metrics.blocked;
+
+  // Update metric data-n for ghost numbers
+  ['m-total','m-allowed','m-blocked'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.closest('.metric')?.setAttribute('data-n', el.textContent);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// FULL AUTO DEMO
+// ════════════════════════════════════════════════════════════
+function runFullDemo() {
+  setMandate('Research AAPL and buy 5 shares if PE ratio is under 25');
+  simulateParse('Research AAPL and buy 5 shares if PE ratio is under 25');
+
+  const steps = [
+    [800,  () => act('READ',      'AAPL', 0,  'research-agent')],
+    [3500, () => act('BUY',       'AAPL', 5,  'execution-agent')],
+    [6500, () => act('SELL',      'AAPL', 5,  'execution-agent')],
+    [9500, () => act('SEND_DATA', '*',    0,  'report-agent', 'external')],
+    [12500,() => act('BUY',       'MSFT', 2,  'execution-agent')],
+    [15500,() => act('BUY',       'AAPL', 50, 'execution-agent')],
+  ];
+  steps.forEach(([delay, fn]) => setTimeout(fn, delay));
+}
+
+// ════════════════════════════════════════════════════════════
+// RESET
+// ════════════════════════════════════════════════════════════
+function clearAll() {
+  Object.assign(S, { intentGraph: null, tokens: {}, tokenMeta: [], tokenExpiry: null, metrics: { total:0, allowed:0, blocked:0 }, auditLog: [] });
+  document.getElementById('mandate-input').value = '';
+  document.getElementById('intent-content').innerHTML = '<div style="font-size:10px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;text-align:center;padding:32px 0;">Parse a mandate to see intent graph</div>';
+  document.getElementById('token-list').innerHTML = '<div style="font-size:10px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;text-align:center;padding:24px;border:1px dashed var(--border);border-radius:3px;">Tokens minted after parsing</div>';
+  document.getElementById('audit-feed').innerHTML = '<div class="audit-empty">No actions logged yet</div>';
+  document.getElementById('jwt-tabs').innerHTML = '<div class="jwt-tab" style="color:var(--ink3);font-style:italic;">Parse a mandate to inspect tokens</div>';
+  document.getElementById('jwt-body').innerHTML = '<div style="font-size:10px;letter-spacing:1px;color:var(--ink3);text-transform:uppercase;text-align:center;padding:24px 0;">Tokens appear here after parsing</div>';
+  document.getElementById('verdict-body').classList.add('hidden');
+  document.getElementById('verdict-placeholder').classList.remove('hidden');
+  document.getElementById('verdict-panel').className = 'verdict-panel';
+  ['total','allowed','blocked'].forEach(k => {
+    document.getElementById('m-' + k).textContent = '0';
+    document.getElementById('hs-' + k === 'hs-total' ? 'hs-total' : 'hs-' + k).textContent = '0';
+  });
+  document.getElementById('hs-total').textContent = '0';
+  document.getElementById('m-tokens').textContent = '0';
+  document.getElementById('hs-tokens').textContent = '0';
+  document.getElementById('c-ok').textContent = '0';
+  document.getElementById('c-err').textContent = '0';
+  document.getElementById('pipeline-status').textContent = 'Idle';
+  document.getElementById('pipeline-status').style.color = '';
+  document.getElementById('flow-log').innerHTML = '<span class="log-line-info">// Trigger an action to see pipeline execution</span>';
+  document.getElementById('parse-status-text').textContent = 'Not parsed';
+  ['orchestrator','agent','armorclaw','execution','alpaca'].forEach(n => {
+    document.getElementById('fn-' + n)?.classList.remove('active','blocked-node','done');
+  });
+  [0,1,2,3].forEach(i => {
+    const el = document.getElementById('fc-' + i);
+    if (el) { el.style.width = '0%'; el.classList.remove('blocked'); }
+  });
+}
+</script>
+</body>
+</html>
