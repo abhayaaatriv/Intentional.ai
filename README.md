@@ -1,4 +1,4 @@
-# CapabilityGuard — Mandate-Scoped Agent Delegation
+# Intentional.ai — Proactive Intent Enforcement
 
 > Financial AI agent with ArmorClaw enforcement: every sub-agent action is validated against a cryptographically-scoped JWT before reaching Alpaca.
 
