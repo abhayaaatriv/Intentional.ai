@@ -1103,6 +1103,218 @@ nav {
 }
 
 /* ══════════════════════════════════════════
+   ARMORIQ COMPLIANCE DASHBOARD
+══════════════════════════════════════════ */
+.compliance-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 24px;
+}
+
+.compliance-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.compliance-title {
+  font-family: var(--display);
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--ink);
+}
+
+.compliance-subtitle {
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.compliance-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  padding: 16px 24px;
+}
+
+.compliance-metric-card {
+  background: var(--bg2);
+  padding: 16px;
+  border-radius: 2px;
+}
+
+.compliance-metric-label {
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.compliance-metric-value {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.compliance-metric-value.good { color: var(--lime); }
+.compliance-metric-value.warning { color: var(--amber); }
+.compliance-metric-value.danger { color: var(--red); }
+
+.threat-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: var(--red-dim);
+  border-radius: 2px;
+  font-size: 9px;
+  color: var(--red);
+  margin-top: 8px;
+}
+
+.threat-indicator.medium {
+  background: rgba(245, 166, 35, 0.15);
+  color: var(--amber);
+}
+
+.threat-indicator.low {
+  background: rgba(200, 241, 53, 0.15);
+  color: var(--lime);
+}
+
+.compliance-alerts {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.compliance-alerts::-webkit-scrollbar { width: 3px; }
+.compliance-alerts::-webkit-scrollbar-track { background: transparent; }
+.compliance-alerts::-webkit-scrollbar-thumb { background: var(--border2); }
+
+.alert-item {
+  padding: 12px;
+  background: var(--bg3);
+  border-left: 3px solid var(--red);
+  border-radius: 2px;
+  margin-bottom: 8px;
+  font-size: 10px;
+  animation: alert-fade-in 0.3s ease;
+}
+
+.alert-item:last-child { margin-bottom: 0; }
+
+.alert-item.warning { border-left-color: var(--amber); }
+.alert-item.info { border-left-color: var(--blue); }
+
+@keyframes alert-fade-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.alert-severity {
+  display: inline-block;
+  font-size: 7px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 2px 6px;
+  background: rgba(255, 64, 64, 0.2);
+  color: var(--red);
+  border-radius: 1px;
+  margin-right: 8px;
+}
+
+.alert-severity.warning {
+  background: rgba(245, 166, 35, 0.2);
+  color: var(--amber);
+}
+
+.alert-severity.info {
+  background: rgba(74, 158, 255, 0.2);
+  color: var(--blue);
+}
+
+.alert-message {
+  display: block;
+  color: var(--ink);
+  margin-top: 4px;
+  font-family: var(--serif);
+}
+
+.agent-registry {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.agent-registry-title {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.agent-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.agent-card {
+  background: var(--bg3);
+  padding: 12px;
+  border-radius: 2px;
+  border-left: 2px solid var(--lime);
+}
+
+.agent-card.unverified { border-left-color: var(--amber); }
+.agent-card.revoked { border-left-color: var(--red); }
+
+.agent-id {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.agent-status {
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.agent-status-badge {
+  display: inline-block;
+  font-size: 7px;
+  padding: 2px 6px;
+  background: rgba(200, 241, 53, 0.2);
+  color: var(--lime);
+  border-radius: 1px;
+}
+
+.agent-status-badge.unverified {
+  background: rgba(245, 166, 35, 0.2);
+  color: var(--amber);
+}
+
+.agent-status-badge.revoked {
+  background: rgba(255, 64, 64, 0.2);
+  color: var(--red);
+}
+
+/* ══════════════════════════════════════════
    UTILITY
 ══════════════════════════════════════════ */
 .hidden { display: none !important; }
@@ -1402,6 +1614,68 @@ violation[<span class="rs">"unauthorized_destination"</span>] { input.action == 
       </div>
     </div>
 
+    <!-- COMPLIANCE DASHBOARD (ARMORIQ) -->
+    <div class="compliance-block">
+      <div class="compliance-header">
+        <div>
+          <div class="compliance-subtitle">ArmorIQ Intent Assurance</div>
+          <div class="compliance-title">Compliance Dashboard</div>
+        </div>
+        <div style="font-size:8px;letter-spacing:2px;color:var(--ink3);text-transform:uppercase;">Real-time Monitoring</div>
+      </div>
+
+      <!-- Compliance Metrics -->
+      <div class="compliance-metrics" id="compliance-metrics">
+        <div class="compliance-metric-card">
+          <div class="compliance-metric-label">OPA Pass Rate</div>
+          <div class="compliance-metric-value good" id="opass-rate">0%</div>
+        </div>
+        <div class="compliance-metric-card">
+          <div class="compliance-metric-label">ArmorIQ Compliance</div>
+          <div class="compliance-metric-value good" id="armoriq-pass-rate">0%</div>
+        </div>
+        <div class="compliance-metric-card">
+          <div class="compliance-metric-label">Both Passed</div>
+          <div class="compliance-metric-value good" id="both-pass-rate">0%</div>
+        </div>
+        <div class="compliance-metric-card">
+          <div class="compliance-metric-label">Identity Verified</div>
+          <div class="compliance-metric-value good" id="identity-verified-pct">0%</div>
+        </div>
+        <div class="compliance-metric-card">
+          <div class="compliance-metric-label">Avg Threat Score</div>
+          <div class="compliance-metric-value" id="avg-threat-score">0</div>
+          <div class="threat-indicator low" id="threat-level-indicator">
+            <span>●</span> No Threats
+          </div>
+        </div>
+        <div class="compliance-metric-card">
+          <div class="compliance-metric-label">Active Violations</div>
+          <div class="compliance-metric-value danger" id="active-violations">0</div>
+        </div>
+      </div>
+
+      <!-- Real-time Alerts -->
+      <div>
+        <div style="padding:16px 24px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+          <div class="compliance-metric-label">Real-time Alerts</div>
+        </div>
+        <div class="compliance-alerts" id="compliance-alerts">
+          <div style="padding:12px;color:var(--ink3);font-size:10px;text-align:center;">No alerts</div>
+        </div>
+      </div>
+
+      <!-- Agent Registry -->
+      <div>
+        <div style="padding:16px 24px;border-top:1px solid var(--border);">
+          <div class="compliance-metric-label">Registered Agents</div>
+          <div class="agent-list" id="agent-list">
+            <div style="color:var(--ink3);font-size:10px;">Loading agents...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- AUDIT LOG -->
     <div class="audit-block">
       <div class="audit-head">
@@ -1502,10 +1776,14 @@ function connectWS() {
     ws.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.type === 'history') {
-        data.entries.reverse().forEach(e => addAuditRow(e, false));
+        data.entries.reverse().forEach(e => {
+          addAuditRow(e, false);
+          updateComplianceMetrics(e);
+        });
       } else if (data.type === 'entry') {
         addAuditRow(data, true);
         updateMetricCounters(data.allowed);
+        updateComplianceMetrics(data);
       }
     };
     ws.onerror = () => {}; // silent fallback to simulation mode
@@ -1920,7 +2198,7 @@ function fill(id, blocked) {
   if (blocked) el.classList.add('blocked');
 }
 
-// ════════════════════════════════════════════════════════════
+// ════════════════════════════════��═══════════════════════════
 // VERDICT PANEL
 // ════════════════════════════════════════════════════════════
 function showVerdict(result, action, ticker, qty, agentId) {
@@ -2067,6 +2345,195 @@ function clearAll() {
     const el = document.getElementById('fc-' + i);
     if (el) { el.style.width = '0%'; el.classList.remove('blocked'); }
   });
+}
+
+// ════════════════════════════════════════════════════════════
+// ARMORIQ COMPLIANCE DASHBOARD
+// ════════════════════════════════════════════════════════════
+S.compliance = {
+  total: 0,
+  opa_passed: 0,
+  armoriq_passed: 0,
+  both_passed: 0,
+  identity_verified: 0,
+  threat_scores: [],
+  violations: [],
+};
+
+function updateComplianceMetrics(entry) {
+  // Update compliance counters based on gateway entry
+  S.compliance.total++;
+  
+  if (entry.opa_verdict) S.compliance.opa_passed++;
+  if (entry.armoriq_verdict) S.compliance.armoriq_passed++;
+  if (entry.opa_verdict && entry.armoriq_verdict) S.compliance.both_passed++;
+  if (entry.agent_identity_verified) S.compliance.identity_verified++;
+  
+  if (entry.threat_score) {
+    S.compliance.threat_scores.push(entry.threat_score);
+  }
+  
+  if (entry.armoriq_violations && entry.armoriq_violations.length > 0) {
+    S.compliance.violations.push({
+      agent: entry.agent_id,
+      violations: entry.armoriq_violations,
+      timestamp: entry.timestamp,
+    });
+  }
+  
+  // Update UI
+  renderComplianceMetrics();
+  updateComplianceAlerts(entry);
+}
+
+function renderComplianceMetrics() {
+  const total = S.compliance.total || 1; // Avoid division by zero
+  
+  const opaRate = ((S.compliance.opa_passed / total) * 100).toFixed(0);
+  const armoriqRate = ((S.compliance.armoriq_passed / total) * 100).toFixed(0);
+  const bothRate = ((S.compliance.both_passed / total) * 100).toFixed(0);
+  const verifiedRate = ((S.compliance.identity_verified / total) * 100).toFixed(0);
+  
+  document.getElementById('opass-rate').textContent = opaRate + '%';
+  document.getElementById('armoriq-pass-rate').textContent = armoriqRate + '%';
+  document.getElementById('both-pass-rate').textContent = bothRate + '%';
+  document.getElementById('identity-verified-pct').textContent = verifiedRate + '%';
+  
+  // Threat score
+  const avgThreat = S.compliance.threat_scores.length > 0 
+    ? (S.compliance.threat_scores.reduce((a,b) => a+b, 0) / S.compliance.threat_scores.length).toFixed(1)
+    : 0;
+  
+  const threatEl = document.getElementById('avg-threat-score');
+  threatEl.textContent = avgThreat;
+  
+  // Color threat level
+  const threatLevel = document.getElementById('threat-level-indicator');
+  if (avgThreat > 70) {
+    threatLevel.className = 'threat-indicator';
+    threatLevel.innerHTML = '<span>●</span> Critical Threat';
+  } else if (avgThreat > 50) {
+    threatLevel.className = 'threat-indicator medium';
+    threatLevel.innerHTML = '<span>●</span> Elevated Threat';
+  } else {
+    threatLevel.className = 'threat-indicator low';
+    threatLevel.innerHTML = '<span>●</span> No Threats';
+  }
+  
+  // Active violations
+  const activeViolations = S.compliance.violations.filter(v => 
+    Date.now() / 1000 - v.timestamp < 300 // Last 5 minutes
+  ).length;
+  
+  document.getElementById('active-violations').textContent = activeViolations;
+  
+  // Update metric colors based on compliance
+  const metricValues = document.querySelectorAll('.compliance-metric-value');
+  metricValues.forEach(el => {
+    el.classList.remove('good', 'warning', 'danger');
+    const text = el.textContent;
+    const value = parseInt(text) || 0;
+    
+    if (value >= 80) el.classList.add('good');
+    else if (value >= 60) el.classList.add('warning');
+    else el.classList.add('danger');
+  });
+}
+
+function updateComplianceAlerts(entry) {
+  const alertsContainer = document.getElementById('compliance-alerts');
+  
+  // Build alerts from entry
+  const alerts = [];
+  
+  if (!entry.agent_identity_verified) {
+    alerts.push({
+      severity: 'critical',
+      message: `Agent ${entry.agent_id} identity verification failed`,
+    });
+  }
+  
+  if (!entry.opa_verdict) {
+    alerts.push({
+      severity: 'warning',
+      message: `OPA policy check failed for ${entry.agent_id}: ${entry.violations.join(', ')}`,
+    });
+  }
+  
+  if (!entry.armoriq_verdict && entry.armoriq_violations) {
+    entry.armoriq_violations.forEach(v => {
+      alerts.push({
+        severity: v.severity === 'critical' ? 'critical' : 'warning',
+        message: `ArmorIQ: ${v.violation} (${v.policy})`,
+      });
+    });
+  }
+  
+  if (entry.threat_score > 50) {
+    alerts.push({
+      severity: entry.threat_score > 70 ? 'critical' : 'warning',
+      message: `High threat score detected: ${entry.threat_score.toFixed(1)}`,
+    });
+  }
+  
+  if (alerts.length === 0 && S.compliance.total <= 1) {
+    alertsContainer.innerHTML = '<div style="padding:12px;color:var(--ink3);font-size:10px;text-align:center;">No alerts</div>';
+    return;
+  }
+  
+  // Render alerts (keep only latest 10)
+  const allAlerts = [];
+  alerts.forEach(a => {
+    const html = `
+      <div class="alert-item ${a.severity === 'critical' ? '' : 'warning'}">
+        <span class="alert-severity ${a.severity === 'critical' ? '' : 'warning'}">${a.severity.toUpperCase()}</span>
+        <span class="alert-message">${a.message}</span>
+      </div>
+    `;
+    allAlerts.push(html);
+  });
+  
+  if (allAlerts.length > 0) {
+    alertsContainer.innerHTML = allAlerts.slice(0, 10).join('');
+  }
+}
+
+// Integrate with existing WS handler
+const originalOnMessage = null;
+function integrateComplianceUpdates() {
+  const connectWS_orig = window.connectWS;
+  window.connectWS = function() {
+    connectWS_orig();
+    
+    const wsOverride = () => {
+      try {
+        const ws = new WebSocket(`ws://${location.hostname}:${GATEWAY_PORT}/ws/audit`);
+        ws.onmessage = (e) => {
+          const data = JSON.parse(e.data);
+          if (data.type === 'history') {
+            data.entries.reverse().forEach(e => {
+              addAuditRow(e, false);
+              updateComplianceMetrics(e);
+            });
+          } else if (data.type === 'entry') {
+            addAuditRow(data, true);
+            updateMetricCounters(data.allowed);
+            updateComplianceMetrics(data);
+          }
+        };
+      } catch(e) {}
+    };
+    
+    setTimeout(wsOverride, 500);
+  };
+  connectWS_orig();
+}
+
+// Initialize compliance tracking
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', integrateComplianceUpdates);
+} else {
+  integrateComplianceUpdates();
 }
 </script>
 </body>
