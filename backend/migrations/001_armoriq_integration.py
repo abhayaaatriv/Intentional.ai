@@ -21,19 +21,26 @@ def migrate():
     print("[Migration] Starting ArmorIQ integration migration...")
     
     try:
-        # Check if migration already applied
-        cursor.execute("PRAGMA table_info(audit_log)")
-        columns = [col[1] for col in cursor.fetchall()]
+        # Check if audit_log table exists
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='audit_log'")
+        table_exists = cursor.fetchone() is not None
         
-        if "armoriq_verdict" in columns:
-            print("[Migration] ArmorIQ fields already exist - skipping migration")
-            return True
-        
-        # Step 1: Backup existing table
-        print("[Migration] Backing up existing audit_log...")
-        cursor.execute("""
-            ALTER TABLE audit_log RENAME TO audit_log_backup
-        """)
+        if table_exists:
+            # Check if migration already applied
+            cursor.execute("PRAGMA table_info(audit_log)")
+            columns = [col[1] for col in cursor.fetchall()]
+            
+            if "armoriq_verdict" in columns:
+                print("[Migration] ArmorIQ fields already exist - skipping migration")
+                return True
+            
+            # Step 1: Backup existing table
+            print("[Migration] Backing up existing audit_log...")
+            cursor.execute("""
+                ALTER TABLE audit_log RENAME TO audit_log_backup
+            """)
+        else:
+            print("[Migration] audit_log table doesn't exist yet - creating fresh")
         
         # Step 2: Create new table with extended schema
         print("[Migration] Creating new audit_log table with ArmorIQ fields...")
@@ -58,20 +65,21 @@ def migrate():
             )
         """)
         
-        # Step 3: Copy data from backup
-        print("[Migration] Migrating data from backup...")
-        cursor.execute("""
-            INSERT INTO audit_log 
-            (id, agent_id, action, ticker, qty, allowed, violations, timestamp,
-             opa_verdict, armoriq_verdict)
-            SELECT id, agent_id, action, ticker, qty, allowed, violations, timestamp,
-                   allowed, allowed
-            FROM audit_log_backup
-        """)
-        
-        # Step 4: Drop backup table
-        print("[Migration] Cleaning up backup table...")
-        cursor.execute("DROP TABLE audit_log_backup")
+        # Step 3: Copy data from backup if it exists
+        if table_exists:
+            print("[Migration] Migrating data from backup...")
+            cursor.execute("""
+                INSERT INTO audit_log 
+                (id, agent_id, action, ticker, qty, allowed, violations, timestamp,
+                 opa_verdict, armoriq_verdict)
+                SELECT id, agent_id, action, ticker, qty, allowed, violations, timestamp,
+                       allowed, allowed
+                FROM audit_log_backup
+            """)
+            
+            # Step 4: Drop backup table
+            print("[Migration] Cleaning up backup table...")
+            cursor.execute("DROP TABLE audit_log_backup")
         
         conn.commit()
         print("[Migration] ✓ Audit log migration complete")

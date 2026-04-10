@@ -24,19 +24,34 @@ cp .env.example .env
 # Edit .env with your credentials
 ```
 
-## 2. Run Database Migration (1 min)
+## 2. Run Database Initialization (1 min)
+
+From the project root:
 
 ```bash
-cd backend
-python migrations/001_armoriq_integration.py
+python backend/init_db.py
 ```
 
-Expected output:
+This will initialize all required tables. Expected output:
 ```
-[Migration] Starting ArmorIQ integration migration...
+============================================================
+ArmorIQ Intentional.ai Database Initialization
+============================================================
+
+Database path: audit.db
+
+[1/2] Initializing audit log table...
+✓ Audit log initialized
+
+[2/2] Running ArmorIQ integration migration...
+[Migration] Creating new audit_log table with ArmorIQ fields...
 [Migration] ✓ Audit log migration complete
 [Migration] ✓ All tables created successfully
 [Migration] ✓ ArmorIQ integration migration complete!
+
+============================================================
+✓ Database initialization complete!
+============================================================
 ```
 
 ## 3. Start Services (2 min)
@@ -50,10 +65,10 @@ docker run -p 8181:8181 openpolicyagent/opa:latest run --server
 ```bash
 cd backend
 pip install -r requirements.txt
-python gateway/main.py
+python -m gateway.main
 ```
 
-Expected: `INFO:     Uvicorn running on http://0.0.0.0:8001`
+Expected: `INFO:     Uvicorn running on http://0.0.0.0:8000`
 
 **Terminal 3: Frontend**
 ```bash
@@ -133,13 +148,13 @@ The gateway now:
 
 ### Health Check
 ```bash
-curl http://localhost:8001/health
-curl http://localhost:8001/armoriq/health
+curl http://localhost:8000/health
+curl http://localhost:8000/armoriq/health
 ```
 
 ### Get Compliance Stats
 ```bash
-curl http://localhost:8001/compliance/stats
+curl http://localhost:8000/compliance/stats
 ```
 
 Example response:
@@ -160,12 +175,12 @@ Example response:
 
 ### Get Audit Logs
 ```bash
-curl http://localhost:8001/logs?limit=5
+curl http://localhost:8000/logs?limit=5
 ```
 
 ### Check Agent Status
 ```bash
-curl http://localhost:8001/armoriq/threat-intel?agent_id=research-agent
+curl http://localhost:8000/armoriq/threat-intel?agent_id=research-agent
 ```
 
 ## Troubleshooting
@@ -197,7 +212,7 @@ Error: opa_unreachable
 
 1. **Explore Compliance Reports**:
    ```bash
-   curl http://localhost:8001/compliance/report
+   curl http://localhost:8000/compliance/report
    ```
 
 2. **Register Custom Agents**:
