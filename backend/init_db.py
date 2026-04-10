@@ -8,12 +8,19 @@ Run with: python backend/init_db.py
 
 import os
 import sys
+import importlib.util
 
 # Add backend to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from audit.db import init_db
-from migrations.001_armoriq_integration import migrate
+
+# Dynamically import migration (filename starts with number)
+migration_path = os.path.join(os.path.dirname(__file__), "migrations", "001_armoriq_integration.py")
+spec = importlib.util.spec_from_file_location("armoriq_migration", migration_path)
+migration_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(migration_module)
+migrate = migration_module.migrate
 
 
 def main():
